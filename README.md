@@ -38,7 +38,7 @@ python main.py run
 ```
 Por defecto la aplicación se expone en http://127.0.0.1:8000.
 
-### Ejemplo de payload JSON (POST)
+### Ejemplo de payload JSON (*/process-orders/* Metodo POST)
 Ejemplo de payload válido que recorre el flujo completo y termina en DELIVERED:
 
 ```json
