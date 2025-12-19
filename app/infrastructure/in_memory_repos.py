@@ -24,7 +24,7 @@ class InMemoryEventRepository(EventRepositoryPort):
         self._events.append(event)
 
     def get_by_order_id(self, order_id: str) -> list[Event]:
-        return [e for e in self._events if e["order_id"] == order_id]
+        return [e for e in self._events if e.order_id == order_id]
 
     def get_all(self) -> list[Event]:
         return self._events

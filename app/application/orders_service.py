@@ -20,7 +20,6 @@ class OrderService:
     def __init__(self, orders_repo: OrderRepositoryPort, events_repo: EventRepositoryPort) -> None:
         self._orders_repo = orders_repo
         self._events_repo = events_repo
-        self._errors: list[ErrorViewDTO] = []
 
         self._handlers: dict = {
             "CREATE_ORDER": CreateOrderHandler(orders_repo, events_repo),
@@ -45,6 +44,7 @@ class OrderService:
         Returns:
             ResultDTO: Response view with orders, events and errors.
         """
+        errors: list[ErrorViewDTO] = []
         order_ids: set[str] = set()
         for cmd in commands:
             handler = self._handlers.get(cmd.op)
@@ -52,7 +52,7 @@ class OrderService:
             if order_id:
                 order_ids.add(order_id)
             if handler is None:
-                self._errors.append(
+                errors.append(
                     ErrorViewDTO(
                         op=cmd.op,
                         order_id=order_id,
@@ -62,9 +62,9 @@ class OrderService:
                 )
                 continue
 
-            handler.handle(cmd, self._errors)
+            handler.handle(cmd, errors)
         order_views: list[OrderViewDTO] = []
-        for order in order_ids:
+        for order_id in order_ids:
             order = self._orders_repo.get_by_id(order_id)
             if not order:
                 continue
@@ -83,4 +83,4 @@ class OrderService:
         for event in self._events_repo.get_all():
             if event.order_id in order_ids:
                 event_views.append(EventViewDTO(order_id=event.order_id, type=event.type.value))
-        return ResultDTO(orders=order_views, events=event_views, errors=self._errors)
+        return ResultDTO(orders=order_views, events=event_views, errors=errors)
