@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from .dtos import CommandDTO, ErrorViewDTO, EventViewDTO, OrderViewDTO, ResultDTO
+from app.application.dtos import CommandDTO, ErrorViewDTO, EventViewDTO, OrderViewDTO, ResultDTO
 from app.application.use_cases.create_order import CreateOrderHandler
 from app.application.use_cases.add_service import AddServiceHandler
 from app.application.use_cases.set_state_diagnosed import SetStateDiagnosedHandler
@@ -12,7 +12,6 @@ from app.application.use_cases.reauthorize import ReauthorizeHandler
 from app.application.use_cases.deliver import DeliverHandler
 from app.application.use_cases.cancel import CancelHandler
 from app.domain.errors import ErrorCode
-from app.domain.entities import OrderStatus
 from app.domain.ports import OrderRepositoryPort, EventRepositoryPort
 
 
